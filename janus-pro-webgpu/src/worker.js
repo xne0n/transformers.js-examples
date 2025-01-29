@@ -4,11 +4,16 @@ import {
   BaseStreamer,
   TextStreamer,
   InterruptableStoppingCriteria,
+  env
 } from "@huggingface/transformers";
 
 // Define constants
 const IMAGE_GENERATION_COMMAND_PREFIX = "/imagine ";
 const MAX_NEW_TEXT_TOKENS = 1024;
+
+// Configure environment for local model loading
+env.allowRemoteModels = false;
+env.localModelPath = "./models";
 
 /**
  * Helper function to perform WebGPU feature detection
@@ -37,7 +42,7 @@ async function check() {
  * This class uses the Singleton pattern to enable lazy-loading of the pipeline
  */
 class ImageGenerationPipeline {
-  static model_id = "onnx-community/Janus-Pro-1B-ONNX";
+  static model_id = "onnx-community/Janus-Pro-1B-ONNX";//TO CHANGE WITH LOCAL PATH
 
   static async getInstance(progress_callback = null) {
     this.processor ??= AutoProcessor.from_pretrained(this.model_id, {
